@@ -1,6 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
-const Blogs = require("./models/blog-model");
+const Notes = require("./models/note-model");
 const cors = require("cors");
 
 const app = express();
@@ -11,71 +11,71 @@ app.get("/", (req, res) => {
   res.send("Server is running");
 });
 
-// Post new blogs to MongoDB database
-app.post("/blogs", async (req, res) => {
+// Post new notes to MongoDB database
+app.post("/notes", async (req, res) => {
   try {
-    const blogs = await Blogs.create(req.body);
-    res.status(200).json(blogs);
+    const notes = await Notes.create(req.body);
+    res.status(200).json(notes);
   } catch (error) {
     console.log(error.message);
     res.status(500).json({ message: error.message });
   }
 });
 
-// Get blogs from MongoDB database
-app.get("/blogs", async (req, res) => {
+// Get notes from MongoDB database
+app.get("/notes", async (req, res) => {
   try {
-    const blogs = await Blogs.find();
-    res.status(200).json(blogs);
+    const notes = await Notes.find();
+    res.status(200).json(notes);
   } catch (error) {
     console.log("Error: ", error.message);
     res.status(500).json({ message: error.message });
   }
 });
 
-// Get single blog from MongoDB database
-app.get("/blogs/:id", async (req, res) => {
+// Get single note from MongoDB database
+app.get("/notes/:id", async (req, res) => {
   try {
     const id = req.params.id;
-    const blog = await Blogs.findById(id);
-    res.status(200).json(blog);
+    const note = await Notes.findById(id);
+    res.status(200).json(note);
   } catch (error) {
     console.log("Error: ", error.message);
     res.status(500).json({ message: error.message });
   }
 });
 
-// Update a blog from MongoDB database
-app.put("/blogs/:id", async (req, res) => {
+// Update a notes from MongoDB database
+app.put("/notes/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const blog = await Blogs.findByIdAndUpdate(id, req.body);
-    if (!blog) {
+    const note = await Notes.findByIdAndUpdate(id, req.body);
+    if (!note) {
       return res
         .status(404)
-        .json({ message: `Cannot find blog with ID: ${id}` });
+        .json({ message: `Cannot find note with ID: ${id}` });
     }
 
-    const updatedBlog = await Blogs.findById(id);
-    res.status(200).json(updatedBlog);
+    const updatednote = await Notes.findById(id);
+    res.status(200).json(updatednote);
   } catch (error) {
     console.log("Error: ", error.message);
     res.status(500).json({ message: error.message });
   }
 });
 
-// Delete a blog from MongoDB database
-app.delete("/blogs/:id", async (req, res) => {
+// Delete a note from MongoDB database
+app.delete("/notes/:id", async (req, res) => {
   try {
     const { id } = req.params;
-    const blog = await Blogs.findByIdAndDelete(id);
-    if (!blog) {
+    const note = await Notes.findByIdAndDelete(id);
+    if (!note) {
       return res
         .status(404)
-        .json({ message: `Cannot find blog with ID: ${id}` });
+        .json({ message: `Cannot find note with ID: ${id}` });
     }
 
-    res.status(200).json(blog);
+    res.status(200).json(note);
   } catch (error) {
     console.log("Error: ", error.message);
     res.status(500).json({ message: error.message });
