@@ -17,6 +17,11 @@ const noteSchema = mongoose.Schema(
       required: [true, "Please enter  color of note"],
       default: "",
     },
+    isArchived: {
+      type: Boolean,
+      required: [true, "Please enter archive status of note"],
+      default: false,
+    },
   },
   {
     timestamp: true,
