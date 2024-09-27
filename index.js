@@ -64,6 +64,31 @@ app.put("/notes/:id", async (req, res) => {
   }
 });
 
+// Update a batch of notes from MongoDB database
+app.put("/notes", async (req, res) => {
+  try {
+    const notes = req.body;
+
+    for (let i = 0; i < notes.length; i++) {
+      const id = notes[i]._id;
+      const note = await Notes.findByIdAndUpdate(id, notes[i]);
+      console.log(note);
+
+      if (!note) {
+        return res
+          .status(404)
+          .json({ message: `Cannot find note with ID: ${id}` });
+      }
+    }
+
+    const updatednotes = await Notes.find();
+    res.status(200).json(updatednotes);
+  } catch (error) {
+    console.log("Error: ", error.message);
+    res.status(500).json({ message: error.message });
+  }
+});
+
 // Delete a note from MongoDB database
 app.delete("/notes/:id", async (req, res) => {
   try {
