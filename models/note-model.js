@@ -1,5 +1,10 @@
 const mongoose = require("mongoose");
 
+const Position = mongoose.Schema({
+  x: Number,
+  y: Number,
+});
+
 const noteSchema = mongoose.Schema(
   {
     title: {
@@ -21,6 +26,11 @@ const noteSchema = mongoose.Schema(
       type: Boolean,
       required: [true, "Please enter archive status of note"],
       default: false,
+    },
+    position: {
+      type: Position,
+      required: [true, "Please enter position of note"],
+      default: { x: 0, y: 0 },
     },
   },
   {
