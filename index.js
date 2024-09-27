@@ -14,7 +14,8 @@ app.get("/", (req, res) => {
 // Post new notes to MongoDB database
 app.post("/notes", async (req, res) => {
   try {
-    const notes = await Notes.create(req.body);
+    const note = await Notes.create(req.body);
+    const notes = await Notes.find();
     res.status(200).json(notes);
   } catch (error) {
     console.log(error.message);
