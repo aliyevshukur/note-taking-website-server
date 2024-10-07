@@ -32,6 +32,11 @@ const noteSchema = mongoose.Schema(
       required: [true, "Please enter position of note"],
       default: { x: 0, y: 0 },
     },
+    zIndex: {
+      type: String,
+      required: false,
+      default: "0",
+    },
   },
   {
     timestamp: true,
