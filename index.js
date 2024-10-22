@@ -26,7 +26,12 @@ app.post("/notes", async (req, res) => {
 // Get notes from MongoDB database
 app.get("/notes", async (req, res) => {
   try {
-    const notes = await Notes.find();
+    const filter = req.query.filter;
+    let notes = [];
+    if (filter === "archived")
+      notes = await Notes.find({ isArchived: true }).sort("zIndex");
+    else notes = await Notes.find({ isArchived: false }).sort("zIndex");
+
     res.status(200).json({ ok: true, notes: notes });
   } catch (error) {
     console.log("Error: ", error.message);
@@ -46,10 +51,11 @@ app.get("/notes/:id", async (req, res) => {
   }
 });
 
-// Update a notes from MongoDB database
+// Update a note from MongoDB database
 app.put("/notes/:id", async (req, res) => {
   try {
     const { id } = req.params;
+    const notes = await Notes.find();
     const note = await Notes.findByIdAndUpdate(id, req.body);
     if (!note) {
       return res
@@ -58,7 +64,7 @@ app.put("/notes/:id", async (req, res) => {
     }
 
     const updatednote = await Notes.findById(id);
-    res.status(200).json({ ok: true, note: updatednote });
+    res.status(200).json({ ok: true, notes: notes });
   } catch (error) {
     console.log("Error: ", error.message);
     res.status(500).json({ ok: false, message: error.message });
